@@ -50,7 +50,7 @@ def encrypt(file_path, key):
     print '[!] Finished Encryption'
 
 def main():
-    print '[1] Encrypt \n [2] Decrypt'
+    print '[1] Encrypt \n[2] Decrypt'
     choice = raw_input('>')
     print 'File Path: '
     file_path = raw_input ('>')
