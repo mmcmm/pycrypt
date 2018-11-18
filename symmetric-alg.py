@@ -21,6 +21,20 @@ def calculate_key(key):
 
     return int(results / counter)
 
+def decrypt(file_path, key):
+    file_contents = open_file(file_path)
+    key_calc = calculate_key(key)
+    dec_results = ''
+
+    for line in file_contents:
+        for wrd in line:
+            for char in wrd:
+                int_char = ord (char) - key_calc
+                dec_results += chr (int_char)
+
+    save_file(dec_results, file_path)
+    print '[!] Finished Decryption'
+
 def encrypt(file_path, key):
     file_contents = open_file(file_path)
     key_calc = calculate_key(key)
