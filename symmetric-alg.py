@@ -1,4 +1,23 @@
 
+def save_file(results, file_path):
+    # Create File Object
+    f = open (file_path, 'w')
+    # Write Results
+    f.write (results)
+    # Close File Object
+    f.close ()
+
+
+def open_file(file_path):
+    # Create File Object
+    f = open (file_path, 'r')
+    # Read File Contents
+    file_contents = f.read ()
+    # Close File Object
+    f.close ()
+
+    return file_contents
+
 def calculate_key(key):
     results = 0
     counter = 0
