@@ -1,4 +1,14 @@
 
+def calculate_key(key):
+    results = 0
+    counter = 0
+    # Convert each Character into an INT and added to results
+    for char in key:
+        counter += 1
+        results += ord (char)
+
+    # Return the results divided by the number of Characters in the key
+    return int (results / counter)
 
 
 def main():
