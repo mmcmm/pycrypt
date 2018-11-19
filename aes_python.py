@@ -11,7 +11,7 @@ class AESCrypto:
         return h.hexdigest()
     
     def __init__(self,key):
-        # Key Size is 128 bits
+        # 128 bits
         self.key = self.md5_hash(key)
 
 
