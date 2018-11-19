@@ -21,4 +21,12 @@ class AESCrypto:
         
         iv = Random.new().read(Block_Size) # Random IV 
         crypto = AES.new(self.key,AES.MODE_CBC,iv)
-        return base64.b64encode(iv + crypto.encrypt(cleartext_blocks))    
+        return base64.b64encode(iv + crypto.encrypt(cleartext_blocks))   
+    
+    def decrypt(self,enctext):
+        enctext = base64.b64decode(enctext)
+        iv = enctext[:16]
+        crypto = AES.new(self.key,AES.MODE_CBC,iv)
+        # Unpad the blocks before decrypting
+        unpad = lambda s : s[0:-ord(s[-1])]
+        return unpad(crypto.decrypt(enctext[16:]))     
