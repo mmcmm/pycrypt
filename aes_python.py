@@ -27,6 +27,5 @@ class AESCrypto:
         enctext = base64.b64decode(enctext)
         iv = enctext[:16]
         crypto = AES.new(self.key,AES.MODE_CBC,iv)
-        # Unpad the blocks before decrypting
-        unpad = lambda s : s[0:-ord(s[-1])]
+        unpad = lambda s : s[0:-ord(s[-1])] # Unpad
         return unpad(crypto.decrypt(enctext[16:]))     
