@@ -10,8 +10,9 @@ class AESCrypto:
         h.update(text)
         return h.hexdigest()
     
-        def __init__(self,key):
-        self.key = self.md5_hash(key) # 128 bits
+    def __init__(self,key):
+        # Key Size is 128 bits
+        self.key = self.md5_hash(key)
 
 
     def encrypt(self,cleartext):
@@ -29,3 +30,9 @@ class AESCrypto:
         crypto = AES.new(self.key,AES.MODE_CBC,iv)
         unpad = lambda s : s[0:-ord(s[-1])] # Unpad
         return unpad(crypto.decrypt(enctext[16:]))     
+
+aes = AESCrypto('p@ssw0rd')
+encrypted = aes.encrypt('Hello World')
+print encrypted
+decrypted = aes.decrypt(encrypted)
+print decrypted
