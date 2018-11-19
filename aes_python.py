@@ -12,3 +12,13 @@ class AESCrypto:
     
         def __init__(self,key):
         self.key = self.md5_hash(key) # 128 bits
+
+
+    def encrypt(self,cleartext):
+        Block_Size = AES.block_size         # Block size - 128 bits
+        pad = lambda s: s + (Block_Size - len (s) % Block_Size) * chr (Block_Size - len (s) % Block_Size)
+        cleartext_blocks = pad(cleartext)
+        
+        iv = Random.new().read(Block_Size) # Random IV 
+        crypto = AES.new(self.key,AES.MODE_CBC,iv)
+        return base64.b64encode(iv + crypto.encrypt(cleartext_blocks))    
