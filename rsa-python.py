@@ -1,7 +1,8 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Signature import PKCS1_PSS
 from Crypto import Random
-# from Crypto.Hash import SHA256
+from Crypto.Hash import SHA256
 import base64
 
 # pip install pycrypto
@@ -50,6 +51,11 @@ class CryptoRSA:
         cipher = PKCS1_OAEP.new(private_key)
         return cipher.decrypt(cipher_text)   
 
+    def __sha256(self,input):
+        sha256 = SHA256.new()
+        sha256.update(input)
+        return sha256
+
     def sign(self,textmessage,private_key_path=None):
         if private_key_path == None:
             private_key_path = self.PRIVATE_KEY_FILE
@@ -59,9 +65,24 @@ class CryptoRSA:
         signature = PKCS1_PSS.new(private_key)
         return signature.sign(self.__sha256(textmessage))   
 
+    def verify(self,signed_signature,textmessage,public_key_path=None):
+        if public_key_path == None:
+            public_key_path = self.PUBLIC_KEY_FILE
 
+        public_key = RSA.importKey(self.__read_file(public_key_path))
+        # Create the verifier
+        verifier = PKCS1_PSS.new(public_key)
+        verification = verifier.verify(self.__sha256(textmessage),signed_signature)
+        print verification    
+
+
+# RSA encrypt / decrypt
 CryptoRSA().generate_keys()
 encrypted_data = CryptoRSA().encrypt("Hello World")
 print encrypted_data
 decrypted_data = CryptoRSA().decrypt(encrypted_data)
 print decrypted_data
+
+# Digital Signatures
+signed_signature = CryptoRSA().sign("Hello World")
+CryptoRSA().verify(signed_signature,"Hello World")
