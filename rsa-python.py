@@ -50,6 +50,15 @@ class CryptoRSA:
         cipher = PKCS1_OAEP.new(private_key)
         return cipher.decrypt(cipher_text)   
 
+    def sign(self,textmessage,private_key_path=None):
+        if private_key_path == None:
+            private_key_path = self.PRIVATE_KEY_FILE
+
+        private_key = RSA.importKey(self.__read_file(private_key_path))
+        # Create the signature
+        signature = PKCS1_PSS.new(private_key)
+        return signature.sign(self.__sha256(textmessage))   
+
 
 CryptoRSA().generate_keys()
 encrypted_data = CryptoRSA().encrypt("Hello World")
