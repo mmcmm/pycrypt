@@ -33,10 +33,19 @@ class CryptoRSA:
         print "Public & Private Keys; generated & saved successfully!"  
 
     def encrypt(self,cleartext, public_keypath=None):
-        if(public_keypath==None):
+        if (public_keypath == None):
             public_keypath = self.PUBLIC_KEY_FILE
             
         public_key = RSA.importKey(self.__read_file(public_keypath))
         cipher = PKCS1_OAEP.new(public_key)
         encrypted_data = cipher.encrypt(cleartext)
         return base64.b64encode(encrypted_data)    
+
+    def decrypt(self,cipher_text, private_key_path=None):
+        if private_key_path == None:
+            private_key_path = self.PRIVATE_KEY_FILE
+            
+        cipher_text = base64.b64decode(cipher_text)
+        private_key = RSA.importKey(self.__read_file(private_key_path))
+        cipher = PKCS1_OAEP.new(private_key)
+        return cipher.decrypt(cipher_text)   
