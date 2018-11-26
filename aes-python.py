@@ -3,6 +3,8 @@ from Crypto.Hash import MD5
 from Crypto import Random
 import base64
 
+# pip install pycrypto
+
 class AESCrypto:
     
     def md5_hash(self,text):
