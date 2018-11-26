@@ -49,3 +49,10 @@ class CryptoRSA:
         private_key = RSA.importKey(self.__read_file(private_key_path))
         cipher = PKCS1_OAEP.new(private_key)
         return cipher.decrypt(cipher_text)   
+
+
+CryptoRSA().generate_keys()
+encrypted_data = CryptoRSA().encrypt("Hello World")
+print encrypted_data
+decrypted_data = CryptoRSA().decrypt(encrypted_data)
+print decrypted_data
