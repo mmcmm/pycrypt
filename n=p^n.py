@@ -19,7 +19,17 @@ class Method1:
             elem[i-1] = 1
             self.fieldC.append(elem)
 
-        
+        # calculate polynom coef
+        elem = [0] * self.n
+        for i in range(1, len(self.polynom)):
+            c = self.polynom[i]
+            if c == 0:  # no point moving it
+                continue
+            c = -c
+            while (c < 0):
+                c += self.p
+            elem[i-1] = c
+        self.fieldC.append(elem)
 
     def printField(self):
         for i in range(len(self.fieldC)):
@@ -27,16 +37,17 @@ class Method1:
 
 
 def main():
-    print('p: ')
-    p = input('> ')
+    # TODO:
+    # print('p: ')
+    # p = input('> ')
 
-    print('n: ')
-    n = input('> ')
+    # print('n: ')
+    # n = input('> ')
 
-    print('Polynom Coefficients: ')
-    polynom = input('> ').split(',')
+    # print('Polynom Coefficients: ')  # t^3 + 2t +1 -> 1,0,2,1
+    # polynom = [int(n) for n in input('> ').split(',')]
 
-    m = Method1(int(p), int(n), polynom)
+    m = Method1(int(3), int(3), [1, 0, 2, 1])
 
     m.generateField()
     m.printField()
