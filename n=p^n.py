@@ -83,7 +83,7 @@ class Method1:
 
     def crypt(self, word, decrypt=None):
           #  fill matrix
-        m = [[]] * 10  # a, b, c ... j
+        m = [[]] * 11  # a, b, c ... j
         for i in range(len(m)):
             m[i] = [0] * max(2, len(word))
 
@@ -128,8 +128,8 @@ class Method1:
         # fil in final rows
         for i in range(len(word)):
             elem = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
-            elem = self.add(self.fieldC[elem], m[6][i])  # a * x + b
-            m[8][i] = self.findFieldFVal(elem)
+            m[8][i] = self.add(self.fieldC[elem], m[6][i])  # a * x + b
+            m[9][i] = self.findFieldFVal(m[8][i])
 
         print('a')
 
