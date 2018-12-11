@@ -1,4 +1,5 @@
 
+
 class Method1:
 
     def __init__(self, p: int, n: int, polynom):
@@ -7,6 +8,7 @@ class Method1:
         self.polynom = polynom
         self.fieldC = []
         self.fieldF = []
+        self.q = p**n
 
     def generateField(self):
         # add first element
@@ -19,7 +21,7 @@ class Method1:
             elem[i-1] = 1
             self.fieldC.append(elem)
 
-        # calculate polynom coef
+        # calculate next element from polynom 
         elem = [0] * self.n
         for i in range(1, len(self.polynom)):
             c = self.polynom[i]
@@ -30,6 +32,37 @@ class Method1:
                 c += self.p
             elem[i-1] = c
         self.fieldC.append(elem)
+
+        # self.multiply([0, 1, 2], [0, 1, 0])
+        # calculate next elements
+        for i in range(len(self.fieldC), self.q):
+            nextElem = self.multiply(self.fieldC[i-1], self.fieldC[1])
+            self.fieldC.append(nextElem)
+
+    def multiply(self, p1, p2):
+        # multiply
+        coeffs = [0] * (len(p2)+len(p1)-1)
+        for i1, coef1 in enumerate(p1):
+            for i2, coef2 in enumerate(p2):
+                coeffs[i1 + i2] += coef1 * coef2
+
+        # replace previous term
+        diff = len(coeffs) - self.n
+        for i in range(diff):
+            r = len(coeffs) - i - 1 # rank
+            if coeffs[i] != 0:
+                for c in range(coeffs[i]): # add it as needed
+                    for j in range(0 + diff, len(coeffs)):
+                        coeffs[j] += self.fieldC[r][j-diff]
+                coeffs[i] = 0        
+
+        # mod p coefficients
+        result = []
+        for i in range(len(coeffs)-1, len(coeffs)-self.n-1, -1):
+            result.append(coeffs[i] % self.p)
+        result.reverse()
+
+        return result
 
     def printField(self):
         for i in range(len(self.fieldC)):
