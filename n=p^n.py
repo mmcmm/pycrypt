@@ -81,11 +81,11 @@ class Method1:
                 value += c * (self.p**(self.n-j-1))
             self.fieldF.append(value)
 
-    def crypt(self, word, decrypt = None):
+    def crypt(self, word, decrypt=None):
           #  fill matrix
-        matrix = [[]] * 10  # a, b, c ... j
-        for i in range(len(matrix)):
-            matrix[i] = [0] * max(2, len(word))
+        m = [[]] * 10  # a, b, c ... j
+        for i in range(len(m)):
+            m[i] = [0] * max(2, len(word))
 
         # starting values, coef index
         a1 = 16
@@ -94,34 +94,39 @@ class Method1:
         b2 = 10
 
         # a1, b1
-        matrix[4][0] = self.fieldC[a1]
-        matrix[5][0] = a1
-        matrix[6][0] = self.fieldC[b1]
-        matrix[7][0] = b1
+        m[4][0] = self.fieldC[a1]
+        m[5][0] = a1
+        m[6][0] = self.fieldC[b1]
+        m[7][0] = b1
 
         # a2, b2
-        matrix[4][1] = self.fieldC[a2]
-        matrix[5][1] = a2
-        matrix[6][1] = self.fieldC[b2]
-        matrix[7][1] = b2
+        m[4][1] = self.fieldC[a2]
+        m[5][1] = a2
+        m[6][1] = self.fieldC[b2]
+        m[7][1] = b2
 
         # add letters and values
         i = 0
         for c in word:
-            position = ascii_uppercase.index(c)+1
-            elemIdx = self.findFieldElem(position)
-            matrix[0][i] = c
-            matrix[3][i] = position
-            matrix[2][i] = self.fieldC[elemIdx]
-            matrix[1][i] = elemIdx
+            alphabelPos = ascii_uppercase.index(c)+1
+            elemIdx = self.findFieldElem(alphabelPos)
+            m[0][i] = c
+            m[1][i] = alphabelPos
+            m[2][i] = self.fieldC[elemIdx]
+            m[3][i] = elemIdx
             i = i + 1
 
         # fill a and b rows
         for i in range(2, len(word)):
-            matrix[4][i] = self.add(matrix[4][i-1], matrix[4][i-2])  # a coef
-            matrix[5][i] = self.findFieldElemPos(matrix[4][i])  # a pos
-            matrix[6][i] = self.multiply(matrix[6][i-1], matrix[6][i-2])  # b coef
-            matrix[7][i] = self.findFieldElemPos(matrix[6][i]) # b post
+            m[4][i] = self.add(m[4][i-1], m[4][i-2])  # a + a prev
+            m[5][i] = self.findFieldElemPos(m[4][i])  # a t pos
+            m[6][i] = (m[6][i-1] + m[6][i-2]) % (self.q-1)  # b * b prev
+            m[7][i] = self.findFieldElemPos(m[6][i])  # b t pos
+
+        # fil in final rows
+        for i in range(len(word)):
+            elem = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
+            elem = self.add(self.fieldC[elem], m[6][i])  # a * x + b
 
         print('a')
 
