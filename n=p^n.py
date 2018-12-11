@@ -10,6 +10,7 @@ class Method1:
         self.fieldC = []
         self.fieldF = []
         self.q = p**n
+        self.alphabet = self.makeAlphabet()
 
     def generateField(self):
         # add first element
@@ -125,13 +126,16 @@ class Method1:
             m[6][i] = self.fieldC[b]  # b * b prev
             m[7][i] = self.findFieldElemPos(m[6][i])  # b t pos
 
-        # fil in final rows
+        # fil in final rows, y = a x + b
         for i in range(len(word)):
             elem = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
             m[8][i] = self.add(self.fieldC[elem], m[6][i])  # a * x + b
             m[9][i] = self.findFieldFVal(m[8][i])
+            m[10][i] = self.alphabet[m[9][i]]  # letters
 
-        print('a')
+        print()
+        for row in m:
+            print(row)
 
     def findFieldFVal(self, coeff):
         i = 0
@@ -151,6 +155,12 @@ class Method1:
             if e == elem:
                 return i
             i = i + 1
+
+    def makeAlphabet(self):
+        alphabet = [" "]
+        for c in ascii_uppercase:
+            alphabet.append(c)
+        return alphabet
 
     def printField(self):
         for i in range(len(self.fieldC)):
