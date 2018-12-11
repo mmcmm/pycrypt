@@ -81,7 +81,7 @@ class Method1:
                 value += c * (self.p**(self.n-j-1))
             self.fieldF.append(value)
 
-    def crypt(self, word):
+    def crypt(self, word, decrypt = None):
           #  fill matrix
         matrix = [[]] * 10  # a, b, c ... j
         for i in range(len(matrix)):
@@ -117,14 +117,25 @@ class Method1:
             i = i + 1
 
         # fill a and b rows
-        for i in range(2, len(matrix)):
-            matrix[4][i] = self.add(matrix[4][i-1], matrix[4][i-2])  # a
-            matrix[6][i] = self.multiply(matrix[6][i-1], matrix[6][i-2])  # b
+        for i in range(2, len(word)):
+            matrix[4][i] = self.add(matrix[4][i-1], matrix[4][i-2])  # a coef
+            matrix[5][i] = self.findFieldElemPos(matrix[4][i])  # a pos
+            matrix[6][i] = self.multiply(matrix[6][i-1], matrix[6][i-2])  # b coef
+            matrix[7][i] = self.findFieldElemPos(matrix[6][i]) # b post
+
+        print('a')
 
     def findFieldElem(self, position):
         for i in self.fieldF:
             if self.fieldF[i] == position:
                 return i
+
+    def findFieldElemPos(self, elem):
+        i = 0
+        for e in self.fieldC:
+            if e == elem:
+                return i
+            i = i + 1
 
     def printField(self):
         for i in range(len(self.fieldC)):
