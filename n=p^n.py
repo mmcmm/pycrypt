@@ -3,7 +3,7 @@ from string import ascii_uppercase
 
 class Method1:
 
-    def __init__(self, p: int, n: int, polynom, word):
+    def __init__(self, p: int, n: int, polynom):
         self.p = p
         self.n = n
         self.polynom = polynom
@@ -11,11 +11,6 @@ class Method1:
         self.fieldF = []
         self.q = p**n
         self.word = word
-
-        #  fill matrix
-        self.matrix = [[]] * 10  # a, b, c ... j
-        for i in range(len(self.matrix)):
-            self.matrix[i] = [0] * max(2, len(word))
 
     def generateField(self):
         # add first element
@@ -56,7 +51,7 @@ class Method1:
             for i2, coef2 in enumerate(p2):
                 coeffs[i1 + i2] += coef1 * coef2
 
-        # replace previous term
+        # replace higher ranked term with previous
         diff = len(coeffs) - self.n
         for i in range(diff):
             r = len(coeffs) - i - 1  # rank
@@ -74,6 +69,12 @@ class Method1:
 
         return result
 
+    def add(self, p1, p2):
+        result = []
+        for i in range(len(p1)):
+            result.append((p1[i] + p2[i]) % self.p)
+        return result
+
     def calculateFValues(self):
         for _, coeff in enumerate(self.fieldC):
             value = 0
@@ -81,7 +82,12 @@ class Method1:
                 value += c * (self.p**(self.n-j-1))
             self.fieldF.append(value)
 
-    def encrypt(self):
+    def crypt(self, word):
+          #  fill matrix
+        matrix = [[]] * 10  # a, b, c ... j
+        for i in range(len(matrix)):
+            matrix[i] = [0] * max(2, len(word))
+
         # starting values, coef index
         a1 = 16
         a2 = 6
@@ -89,27 +95,32 @@ class Method1:
         b2 = 10
 
         # a1, b1
-        self.matrix[4][0] = self.fieldC[a1]
-        self.matrix[5][0] = a1
-        self.matrix[6][0] = self.fieldC[b1]
-        self.matrix[7][0] = b1
+        matrix[4][0] = self.fieldC[a1]
+        matrix[5][0] = a1
+        matrix[6][0] = self.fieldC[b1]
+        matrix[7][0] = b1
 
         # a2, b2
-        self.matrix[4][1] = self.fieldC[a2]
-        self.matrix[5][1] = a2
-        self.matrix[6][1] = self.fieldC[b2]
-        self.matrix[7][1] = b2
+        matrix[4][1] = self.fieldC[a2]
+        matrix[5][1] = a2
+        matrix[6][1] = self.fieldC[b2]
+        matrix[7][1] = b2
 
         # add letters and values
         i = 0
-        for c in self.word:
+        for c in word:
             position = ascii_uppercase.index(c)+1
             elemIdx = self.findFieldElem(position)
-            self.matrix[0][i] = c
-            self.matrix[3][i] = position
-            self.matrix[2][i] = self.fieldC[elemIdx]
-            self.matrix[1][i] = elemIdx
+            matrix[0][i] = c
+            matrix[3][i] = position
+            matrix[2][i] = self.fieldC[elemIdx]
+            matrix[1][i] = elemIdx
             i = i + 1
+
+        # fill a and b rows
+        for i in range(2, len(matrix)):
+            matrix[4][i] = self.add(matrix[4][i-1], matrix[4][i-2])  # a
+            matrix[6][i] = self.multiply(matrix[6][i-1], matrix[6][i-2])  # b
 
     def findFieldElem(self, position):
         for i in self.fieldF:
@@ -136,11 +147,11 @@ def main():
     # print('Word: ')
     # word = input('> ')
 
-    m = Method1(int(3), int(3), [1, 0, 2, 1], "SECRET")
+    m = Method1(int(3), int(3), [1, 0, 2, 1])
 
     m.generateField()
     m.printField()
-    m.encrypt()
+    m.crypt("SECRET")
 
 
 if __name__ == '__main__':
