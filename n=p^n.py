@@ -1,4 +1,4 @@
-
+from string import ascii_uppercase
 
 class Method1:
 
@@ -9,6 +9,7 @@ class Method1:
         self.fieldC = []
         self.fieldF = []
         self.q = p**n
+        self.alphabet = {}
 
     def generateField(self):
         # add first element
@@ -42,13 +43,6 @@ class Method1:
         # generate F values
         self.calculateFValues()
 
-    def calculateFValues(self):
-        for _, coeff in enumerate(self.fieldC):
-            value = 0
-            for j, c in enumerate(coeff):
-                value += c * (self.p**(self.n-j-1))
-            self.fieldF.append(value)
-
     def multiply(self, p1, p2):
         # multiply
         coeffs = [0] * (len(p2)+len(p1)-1)
@@ -74,6 +68,19 @@ class Method1:
 
         return result
 
+    def calculateFValues(self):
+        for _, coeff in enumerate(self.fieldC):
+            value = 0
+            for j, c in enumerate(coeff):
+                value += c * (self.p**(self.n-j-1))
+            self.fieldF.append(value)
+    
+    def generateAlphabet(self):
+        i = 0
+        for c in ascii_uppercase:
+            self.alphabet[c] = (self.fieldF[i], self.fieldC[i])
+            i = i+1
+
     def printField(self):
         for i in range(len(self.fieldC)):
             print("t^" + str(i) + " = (" + ', '.join(str(x) for x in self.fieldC[i])
@@ -95,7 +102,7 @@ def main():
 
     m.generateField()
     m.printField()
-
+    m.generateAlphabet()
 
 if __name__ == '__main__':
     main()
