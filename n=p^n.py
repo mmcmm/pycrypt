@@ -76,7 +76,8 @@ class Method1:
 
     def printField(self):
         for i in range(len(self.fieldC)):
-            print("t^" + i + " = " + self.fieldC[i] + " f(" + i + ") = " + self.fieldF[i])
+            print("t^" + str(i) + " = (" + ', '.join(str(x) for x in self.fieldC[i])
+                  + ")      f(" + str(i) + ") = " + str(self.fieldF[i]))
 
 
 def main():
