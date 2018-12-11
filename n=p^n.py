@@ -129,8 +129,16 @@ class Method1:
         for i in range(len(word)):
             elem = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
             elem = self.add(self.fieldC[elem], m[6][i])  # a * x + b
+            m[8][i] = self.findFieldFVal(elem)
 
         print('a')
+
+    def findFieldFVal(self, coeff):
+        i = 0
+        for e in self.fieldC:
+            if e == coeff:
+                return self.fieldF[i]
+            i = i + 1
 
     def findFieldElem(self, position):
         for i in self.fieldF:
