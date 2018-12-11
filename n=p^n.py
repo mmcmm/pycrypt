@@ -1,15 +1,21 @@
 from string import ascii_uppercase
 
+
 class Method1:
 
-    def __init__(self, p: int, n: int, polynom):
+    def __init__(self, p: int, n: int, polynom, word):
         self.p = p
         self.n = n
         self.polynom = polynom
         self.fieldC = []
         self.fieldF = []
         self.q = p**n
-        self.alphabet = {}
+        self.word = word
+
+        #  fill matrix
+        self.matrix = [[]] * 10  # a, b, c ... j
+        for i in range(len(self.matrix)):
+            self.matrix[i] = [0] * max(2, len(word))
 
     def generateField(self):
         # add first element
@@ -74,12 +80,41 @@ class Method1:
             for j, c in enumerate(coeff):
                 value += c * (self.p**(self.n-j-1))
             self.fieldF.append(value)
-    
-    def generateAlphabet(self):
+
+    def encrypt(self):
+        # starting values, coef index
+        a1 = 16
+        a2 = 6
+        b1 = 13
+        b2 = 10
+
+        # a1, b1
+        self.matrix[4][0] = self.fieldC[a1]
+        self.matrix[5][0] = a1
+        self.matrix[6][0] = self.fieldC[b1]
+        self.matrix[7][0] = b1
+
+        # a2, b2
+        self.matrix[4][1] = self.fieldC[a2]
+        self.matrix[5][1] = a2
+        self.matrix[6][1] = self.fieldC[b2]
+        self.matrix[7][1] = b2
+
+        # add letters and values
         i = 0
-        for c in ascii_uppercase:
-            self.alphabet[c] = (self.fieldF[i], self.fieldC[i])
-            i = i+1
+        for c in self.word:
+            position = ascii_uppercase.index(c)+1
+            elemIdx = self.findFieldElem(position)
+            self.matrix[0][i] = c
+            self.matrix[3][i] = position
+            self.matrix[2][i] = self.fieldC[elemIdx]
+            self.matrix[1][i] = elemIdx
+            i = i + 1
+
+    def findFieldElem(self, position):
+        for i in self.fieldF:
+            if self.fieldF[i] == position:
+                return i
 
     def printField(self):
         for i in range(len(self.fieldC)):
@@ -98,11 +133,15 @@ def main():
     # print('Polynom Coefficients: ')  # t^3 + 2t +1 -> 1,0,2,1
     # polynom = [int(n) for n in input('> ').split(',')]
 
-    m = Method1(int(3), int(3), [1, 0, 2, 1])
+    # print('Word: ')
+    # word = input('> ')
+
+    m = Method1(int(3), int(3), [1, 0, 2, 1], "SECRET")
 
     m.generateField()
     m.printField()
-    m.generateAlphabet()
+    m.encrypt()
+
 
 if __name__ == '__main__':
     main()
