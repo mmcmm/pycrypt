@@ -21,7 +21,7 @@ class Method1:
             elem[i-1] = 1
             self.fieldC.append(elem)
 
-        # calculate next element from polynom 
+        # calculate next element from polynom
         elem = [0] * self.n
         for i in range(1, len(self.polynom)):
             c = self.polynom[i]
@@ -39,6 +39,16 @@ class Method1:
             nextElem = self.multiply(self.fieldC[i-1], self.fieldC[1])
             self.fieldC.append(nextElem)
 
+        # generate F values
+        self.calculateFValues()
+
+    def calculateFValues(self):
+        for _, coeff in enumerate(self.fieldC):
+            value = 0
+            for j, c in enumerate(coeff):
+                value += c * (self.p**(self.n-j-1))
+            self.fieldF.append(value)
+
     def multiply(self, p1, p2):
         # multiply
         coeffs = [0] * (len(p2)+len(p1)-1)
@@ -49,12 +59,12 @@ class Method1:
         # replace previous term
         diff = len(coeffs) - self.n
         for i in range(diff):
-            r = len(coeffs) - i - 1 # rank
+            r = len(coeffs) - i - 1  # rank
             if coeffs[i] != 0:
-                for c in range(coeffs[i]): # add it as needed
+                for _ in range(coeffs[i]):  # add it as needed
                     for j in range(0 + diff, len(coeffs)):
                         coeffs[j] += self.fieldC[r][j-diff]
-                coeffs[i] = 0        
+                coeffs[i] = 0
 
         # mod p coefficients
         result = []
