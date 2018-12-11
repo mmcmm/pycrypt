@@ -10,7 +10,6 @@ class Method1:
         self.fieldC = []
         self.fieldF = []
         self.q = p**n
-        self.word = word
 
     def generateField(self):
         # add first element
