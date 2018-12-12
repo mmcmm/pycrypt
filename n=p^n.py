@@ -189,24 +189,25 @@ class Method1:
 
 
 def main():
-    # TODO:
-    # print('p: ')
-    # p = input('> ')
+    print('p: ')
+    p = input('> ')
 
-    # print('n: ')
-    # n = input('> ')
+    print('n: ')
+    n = input('> ')
 
-    # print('Polynom Coefficients: ')  # t^3 + 2t +1 -> 1,0,2,1
-    # polynom = [int(n) for n in input('> ').split(',')]
+    print('Polynom Coefficients: ')  # t^3 + 2t +1 -> 1,0,2,1
+    polynom = [int(n) for n in input('> ').split(',')]
 
-    # print('Word: ')
-    # word = input('> ')
+    print('Word: ')
+    word = input('> ')
 
-    m = Method1(int(3), int(3), [1, 0, 2, 1])
+    # m = Method1(int(3), int(3), [1, 0, 2, 1])
+    m = Method1(int(p), int(n), polynom)
 
     m.generateField()
     m.printField()
-    word2 = m.crypt("SECRET")
+   # word2 = m.crypt("SECRET")
+    word2 = m.crypt(word)
     print()
     word = m.crypt(word2, decrypt=True)
 
