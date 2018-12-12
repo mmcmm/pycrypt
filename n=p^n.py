@@ -147,8 +147,7 @@ class Method1:
             # y = a x + b
             for i in range(len(word)):
                 a_x = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
-                m[8][i] = self.add(self.fieldC[a_x], m[6][i]
-                                   )  # (a * x) + b, add b
+                m[8][i] = self.add(self.fieldC[a_x], m[6][i])  # (a * x) + b, add b
                 m[9][i] = self.findFieldFVal(m[8][i])
                 m[10][i] = self.alphabet[m[9][i]]  # letters
 
