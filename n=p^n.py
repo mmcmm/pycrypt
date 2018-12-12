@@ -44,7 +44,7 @@ class Method1:
         self.calculateFValues()
 
     def multiply(self, p1, p2):
-        # multiply
+        # multiply terms
         coeffs = [0] * (len(p2)+len(p1)-1)
         for i1, coef1 in enumerate(p1):
             for i2, coef2 in enumerate(p2):
