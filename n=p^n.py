@@ -133,14 +133,16 @@ class Method1:
             m[7][i] = self.findFieldElemExp(m[6][i])  # b t pos
 
         # fil in final rows
-        if decrypt != None:
+        if decrypt == True:
             # x = 1/a (y − b)
             for i in range(len(word)):
                 a = (self.q-1 - m[5][i]) # 1/a - substract exp
-                y_b = self.substract(m[3][i], m[6][i]) # y - b
+                y_b = self.substract(m[2][i], m[6][i]) # y - b
                 y_b = self.findFieldElemExp(y_b)
                 elem = (a + y_b) % (self.q-1) # 1/a * (y-b)
-                m[9][i] = self.findFieldFVal(elem)
+                m[8][i] = self.fieldC[elem]
+                m[9][i] = self.findFieldFVal(self.fieldC[elem])
+                m[10][i] = self.alphabet[m[9][i]]  # letters
         else:
             # y = a x + b
             for i in range(len(word)):
@@ -206,7 +208,7 @@ def main():
     m.printField()
     word2 = m.crypt("SECRET")
     print()
-    word = m.crypt(word2)
+    word = m.crypt(word2, decrypt=True)
 
 
 if __name__ == '__main__':
