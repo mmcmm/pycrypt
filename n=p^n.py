@@ -126,11 +126,11 @@ class Method1:
         # fill a and b rows
         for i in range(2, len(word)):
             m[4][i] = self.add(m[4][i-1], m[4][i-2])  # a + a prev
-            m[5][i] = self.findFieldElemPos(m[4][i])  # a t pos
+            m[5][i] = self.findFieldElemExp(m[4][i])  # a t pos
 
             b = (m[7][i-1] + m[7][i-2]) % (self.q-1)
             m[6][i] = self.fieldC[b]  # b * b prev
-            m[7][i] = self.findFieldElemPos(m[6][i])  # b t pos
+            m[7][i] = self.findFieldElemExp(m[6][i])  # b t pos
 
         # fil in final rows
         if decrypt != None:
@@ -138,6 +138,9 @@ class Method1:
             for i in range(len(word)):
                 a = (self.q-1 - m[5][i]) # 1/a - substract exp
                 y_b = self.substract(m[3][i], m[6][i]) # y - b
+                y_b = self.findFieldElemExp(y_b)
+                elem = (a + y_b) % (self.q-1) # 1/a * (y-b)
+                m[9][i] = self.findFieldFVal(elem)
         else:
             # y = a x + b
             for i in range(len(word)):
@@ -164,7 +167,7 @@ class Method1:
             if self.fieldF[i] == position:
                 return i
 
-    def findFieldElemPos(self, elem):
+    def findFieldElemExp(self, elem):
         i = 0
         for e in self.fieldC:
             if e == elem:
