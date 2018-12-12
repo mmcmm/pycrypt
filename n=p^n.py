@@ -76,10 +76,10 @@ class Method1:
         return result
 
     def substract(self, p1, p2):
-            result = []
-            for i in range(len(p1)):
-                result.append((p1[i] - p2[i]) % self.p)
-            return result
+        result = []
+        for i in range(len(p1)):
+            result.append((p1[i] - p2[i]) % self.p)
+        return result
 
     def calculateFValues(self):
         for _, coeff in enumerate(self.fieldC):
@@ -133,28 +133,29 @@ class Method1:
             m[7][i] = self.findFieldElemExp(m[6][i])  # b t pos
 
         # fil in final rows
-        if decrypt == True:
+        if decrypt == True:  # decrypt
             # x = 1/a (y − b)
             for i in range(len(word)):
-                a = (self.q-1 - m[5][i]) # 1/a - substract exp
-                y_b = self.substract(m[2][i], m[6][i]) # y - b
+                a = (self.q-1 - m[5][i])  # 1/a - substract exp
+                y_b = self.substract(m[2][i], m[6][i])  # y - b
                 y_b = self.findFieldElemExp(y_b)
-                elem = (a + y_b) % (self.q-1) # 1/a * (y-b)
+                elem = (a + y_b) % (self.q-1)  # 1/a * (y-b)
                 m[8][i] = self.fieldC[elem]
                 m[9][i] = self.findFieldFVal(self.fieldC[elem])
                 m[10][i] = self.alphabet[m[9][i]]  # letters
-        else:
+        else:  # encrypt
             # y = a x + b
             for i in range(len(word)):
                 a_x = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
-                m[8][i] = self.add(self.fieldC[a_x], m[6][i])  # (a * x) + b, add b
+                m[8][i] = self.add(self.fieldC[a_x], m[6][i]
+                                   )  # (a * x) + b, add b
                 m[9][i] = self.findFieldFVal(m[8][i])
                 m[10][i] = self.alphabet[m[9][i]]  # letters
 
         print()
         for row in m:
             print(row)
-        
+
         return ''.join(m[10])
 
     def findFieldFVal(self, coeff):
