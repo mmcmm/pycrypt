@@ -75,6 +75,12 @@ class Method1:
             result.append((p1[i] + p2[i]) % self.p)
         return result
 
+    def substract(self, p1, p2):
+            result = []
+            for i in range(len(p1)):
+                result.append((p1[i] - p2[i]) % self.p)
+            return result
+
     def calculateFValues(self):
         for _, coeff in enumerate(self.fieldC):
             value = 0
@@ -126,12 +132,19 @@ class Method1:
             m[6][i] = self.fieldC[b]  # b * b prev
             m[7][i] = self.findFieldElemPos(m[6][i])  # b t pos
 
-        # fil in final rows, y = a x + b
-        for i in range(len(word)):
-            elem = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
-            m[8][i] = self.add(self.fieldC[elem], m[6][i])  # a * x + b
-            m[9][i] = self.findFieldFVal(m[8][i])
-            m[10][i] = self.alphabet[m[9][i]]  # letters
+        # fil in final rows
+        if decrypt != None:
+            # x = 1/a (y − b)
+            for i in range(len(word)):
+                a = (self.q-1 - m[5][i]) # 1/a - substract exp
+                y_b = self.substract(m[3][i], m[6][i]) # y - b
+        else:
+            # y = a x + b
+            for i in range(len(word)):
+                a_x = (m[5][i] + m[3][i]) % (self.q-1)  # a * x, add exp
+                m[8][i] = self.add(self.fieldC[a_x], m[6][i])  # (a * x) + b, add b
+                m[9][i] = self.findFieldFVal(m[8][i])
+                m[10][i] = self.alphabet[m[9][i]]  # letters
 
         print()
         for row in m:
