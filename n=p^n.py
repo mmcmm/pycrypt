@@ -23,20 +23,19 @@ class Method1:
             elem[i-1] = 1
             self.fieldC.append(elem)
 
-        # calculate next element from polynom
+        # calculate next element from polynom, t^3
         elem = [0] * self.n
         for i in range(1, len(self.polynom)):
             c = self.polynom[i]
-            if c == 0:  # no point moving it
+            if c == 0:  # no point moving it to right of =
                 continue
-            c = -c
+            c = -c # move to right of =
             while (c < 0):
-                c += self.p
+                c += self.p # mod p
             elem[i-1] = c
-        self.fieldC.append(elem)
+        self.fieldC.append(elem) # add coeffs
 
-        # self.multiply([0, 1, 2], [0, 1, 0])
-        # calculate next elements
+        # calculate next elements eg t^3 * t
         for i in range(len(self.fieldC), self.q):
             nextElem = self.multiply(self.fieldC[i-1], self.fieldC[1])
             self.fieldC.append(nextElem)
