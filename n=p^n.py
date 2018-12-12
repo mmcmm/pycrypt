@@ -53,9 +53,9 @@ class Method1:
         # replace higher ranked term with previous
         diff = len(coeffs) - self.n
         for i in range(diff):
-            r = len(coeffs) - i - 1  # rank
+            r = len(coeffs) - i - 1  # rank in polynom
             if coeffs[i] != 0:
-                for _ in range(coeffs[i]):  # add it as needed
+                for _ in range(coeffs[i]):  # add it as many times as needed
                     for j in range(0 + diff, len(coeffs)):
                         coeffs[j] += self.fieldC[r][j-diff]
                 coeffs[i] = 0
@@ -84,7 +84,7 @@ class Method1:
         for _, coeff in enumerate(self.fieldC):
             value = 0
             for j, c in enumerate(coeff):
-                value += c * (self.p**(self.n-j-1))
+                value += c * (self.p**(self.n-j-1)) # c * p^n−1−i
             self.fieldF.append(value)
 
     def crypt(self, word, decrypt=None):
@@ -111,7 +111,7 @@ class Method1:
         m[6][1] = self.fieldC[b2]
         m[7][1] = b2
 
-        # add letters and values
+        # add cleartext letters and values
         i = 0
         for c in word:
             alphabelPos = ascii_uppercase.index(c)+1
