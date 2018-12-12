@@ -205,6 +205,8 @@ def main():
     m.generateField()
     m.printField()
     word2 = m.crypt("SECRET")
+    print()
+    word = m.crypt(word2)
 
 
 if __name__ == '__main__':
