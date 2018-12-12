@@ -136,6 +136,8 @@ class Method1:
         print()
         for row in m:
             print(row)
+        
+        return ''.join(m[10])
 
     def findFieldFVal(self, coeff):
         i = 0
@@ -186,7 +188,7 @@ def main():
 
     m.generateField()
     m.printField()
-    m.crypt("SECRET")
+    word2 = m.crypt("SECRET")
 
 
 if __name__ == '__main__':
